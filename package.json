@@ -9,6 +9,10 @@
     "dist": "electron-builder"
   },
   "license": "MIT",
+  "author": {
+  "name": "KSZ Team",
+  "email": "noreply@kszreader.app"
+  },
   "build": {
     "appId": "com.ksz.reader",
     "productName": "KSZ Reader",
