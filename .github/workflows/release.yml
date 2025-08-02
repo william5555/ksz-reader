@@ -1,29 +1,30 @@
-name: Build and Release KSZ Reader
+name: Build and Release
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'  # 每次打 tag 都會觸發自動打包與發布
+
+permissions:
+  contents: write  # ✅ 讓 GITHUB_TOKEN 有權限建立 Release
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+    runs-on: ubuntu-latest  # Github runner 會自動打包各平台
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: 20
+          node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build Electron App
+      - name: Build App for all platforms
         run: npm run dist
 
       - name: Upload Release Assets
@@ -32,8 +33,5 @@ jobs:
           files: |
             dist/*.exe
             dist/*.dmg
-            dist/*.zip
             dist/*.AppImage
             dist/*.deb
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
