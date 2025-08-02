@@ -1,35 +1,38 @@
-name: Build and Release KSZ Reader
+name: Build and Release KSZ Reader for Windows
 
 on:
   push:
     tags:
       - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: 18
 
       - name: Install dependencies
         run: npm install
 
-      - name: Build KSZ Reader
+      - name: Build Windows EXE with electron-builder
         run: npm run dist
 
-      - name: Upload Release Assets
+      - name: Upload Release to GitHub
         uses: softprops/action-gh-release@v1
         with:
           files: |
             dist/*.exe
-            dist/*.dmg
-            dist/*.AppImage
+            dist/*.msi
+            dist/*.nsis.*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
