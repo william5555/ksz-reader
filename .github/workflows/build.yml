@@ -1,0 +1,40 @@
+
+---
+
+## ✅ `.github/workflows/build.yml`（自動打包發佈）
+
+建立資料夾 `.github/workflows/`，並在裡面新增 `build.yml`：
+
+```yaml
+name: Build KSZ Reader for Windows
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Electron app
+        run: npm run dist
+
+      - name: Upload release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            dist/win-unpacked/KSZ Reader.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
