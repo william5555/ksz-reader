@@ -3,74 +3,49 @@ name: Build & Release for All Platforms
 on:
   push:
     tags:
-      - "v*.*.*"
+      - "v*"
 
 jobs:
-  build-mac:
-    runs-on: macos-latest
-    steps:
-      - uses: actions/upload-artifact@v4
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build macOS
-        run: npm run dist -- --mac
-
-      - name: Upload macOS Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: macOS
-          path: |
-            dist/*.dmg
-            dist/*.zip
-
-  build-win:
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v3
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Build Windows
-        run: npm run dist -- --win
-
-      - name: Upload Windows Artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: Windows
-          path: dist/*.exe
-
-  build-linux:
+  release:
     runs-on: ubuntu-latest
+
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Remove old artifacts and caches
+        run: rm -rf dist node_modules
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Build Linux
-        run: npm run dist -- --linux
+      - name: Build & Package App
+        run: npm run dist
 
-      - name: Upload Linux Artifacts
-        uses: actions/upload-artifact@v3
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
         with:
-          name: Linux
+          name: ksz-reader-builds
           path: |
+            dist/*.exe
+            dist/*.dmg
             dist/*.AppImage
             dist/*.deb
 
-  release:
-    needs: [build-mac, build-win, build-linux]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/download-artifact@v3
-        with:
-          path: ./artifacts
-
-      - name: Publish GitHub Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          name: Release ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
           files: |
-            artifacts/**/*
+            dist/*.exe
+            dist/*.dmg
+            dist/*.AppImage
+            dist/*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
