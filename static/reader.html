@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KSZ 閱讀器 • 章節模式</title>
+  <link rel="stylesheet" href="css/reader.css" />
+</head>
+<body>
+  <div class="reader-container">
+    <nav id="chapter-menu">
+      <ul></ul>
+    </nav>
+    <main>
+      <header id="reader-header">
+        <button id="back-btn">← 返回</button>
+        <div id="meta-info"></div>
+  <div id="controls">
+          <button id="decrease-font"></button>
+          <button id="increase-font"></button>
+          <button id="theme-toggle"></button>
+          <button id="highlight-toggle"></button>
+        </div>      
+      </header>
+      <article id="content-area"></article>
+    </main>
+  </div>
+
+  <script src="security.js"></script>
+  <script src="js/parser.pro.js"></script>
+  <script src="js/render.pro.js"></script>
+  <script src="js/app.controller.js"></script>
+  <script src="reader.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,8 @@
+# 忽略編譯後產物與安裝檔
+dist/
+*.exe
+*.dmg
+*.AppImage
+
+# 忽略 node_modules
+node_modules/

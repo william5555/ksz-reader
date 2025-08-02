@@ -1,0 +1,186 @@
+/* ================================
+   🎨 KSZ 閱讀器樣式總表 v2.1
+   ================================ */
+
+:root {
+  --bg-light:      #faf8f4;
+  --bg-dark:       #1e1e1e;
+  --text-light:    #2e2e2e;
+  --text-dark:     #f4f4f4;
+  --primary:       #4a7b66;
+  --primary-hover: #5a8f75;
+  --accent:        #9dbba6;
+  --danger:        #c0392b;
+
+  --radius:        6px;
+  --transition:    0.3s ease;
+  --max-width:     800px;
+  --spacing:       1rem;
+}
+
+/* === Reset === */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: "Noto Serif TC", serif;
+  background: var(--bg-light);
+  color: var(--text-light);
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+}
+.dark-mode {
+  background: var(--bg-dark);
+  color: var(--text-dark);
+}
+
+/* === 容器限制 === */
+.container {
+  width: 90%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* === 封面區塊 === */
+#cover-box {
+  position: relative;
+  height: 50vh;
+  min-height: 280px;
+  background: url("/assets/KSZ\ READER.png") center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+#cover-box .overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+#cover-box .container {
+  position: relative;
+  z-index: 1;
+}
+#book-title.loading {
+  font-style: italic;
+  opacity: 0.6;
+}
+#book-title {
+  font-family: "Noto Sans TC", sans-serif;
+  font-size: 2.5rem;
+  color: #fff;
+}
+#book-author {
+  font-size: 1.1rem;
+  color: var(--accent);
+}
+
+/* === 夜間模式按鈕 === */
+#theme-toggle {
+  position: absolute;
+  top: var(--spacing);
+  right: var(--spacing);
+  background: rgba(255,255,255,0.2);
+  border: none;
+  padding: 0.5em;
+  font-size: 1.4rem;
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+#theme-toggle:hover {
+  background: rgba(255,255,255,0.4);
+}
+
+/* === 上傳區 & 按鈕樣式 === */
+#upload-box {
+  text-align: center;
+  margin: 2rem 0;
+}
+#upload-box .btn,
+#reader-link {
+  display: inline-block;
+  background: var(--primary);
+  color: #fff;
+  padding: 0.8rem 1.5rem;
+  border-radius: var(--radius);
+  border: none;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--transition), box-shadow var(--transition);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+#upload-box .btn:hover,
+#reader-link:hover {
+  background: var(--primary-hover);
+  box-shadow: 0 0 0 2px var(--accent);
+}
+#reader-link.hidden {
+  display: none;
+}
+#upload-box .hint {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+#upload-box .highlight {
+  color: var(--primary);
+  font-weight: bold;
+}
+
+/* === 錯誤與資訊 === */
+#error-box {
+  color: var(--danger);
+  margin-bottom: 1rem;
+  font-weight: bold;
+  text-align: center;
+}
+#info-bar {
+  background: #e0f7e9;
+  padding: 1rem;
+  border-radius: var(--radius);
+  font-size: 0.95rem;
+  color: #2e603c;
+  margin-bottom: 1rem;
+}
+.dark-mode #info-bar {
+  background: #2e603c;
+  color: #e0f7e9;
+}
+
+/* === 預覽內容區 === */
+#render-area {
+  background: #fff;
+  padding: 2rem;
+  border-radius: var(--radius);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+}
+.dark-mode #render-area {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+#render-area h1 {
+  font-family: "Noto Sans TC", sans-serif;
+  color: var(--primary);
+  margin-bottom: 1rem;
+  border-bottom: 2px solid var(--accent);
+  padding-bottom: 0.5rem;
+}
+#render-area p {
+  margin-bottom: 1rem;
+  font-size: 1rem;
+}
+#render-area img {
+  display: block;
+  max-width: 100%;
+  margin: 1.5rem auto;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+/* === 響應式調整 === */
+@media (max-width: 600px) {
+  #book-title { font-size: 1.8rem; }
+  #render-area { padding: 1rem; }
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>KSZ 閱讀器</title>
+  <link rel="stylesheet" href="css/style.design.css" />
+</head>
+<body>
+  <header id="cover-box">
+    <div class="overlay"></div>
+    <div class="container">
+      <div id="book-meta">
+        <h1 id="book-title">— 讀取中 —</h1>
+        <p id="book-author"></p>
+      </div>
+      <button id="theme-toggle" aria-label="切換夜間模式">🌙</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <section id="upload-box">
+      <label for="kszFileInput" class="btn">選擇 KSZ 檔案</label>
+      <input type="file" id="kszFileInput" accept=".ksz" hidden />
+      <p class="hint">僅支援副檔名為 <span class="highlight">.ksz</span> 的筆記檔案</p>
+
+      <!-- 顯示「進入章節閱讀模式」按鈕 -->
+      <a id="reader-link" class="btn hidden" href="reader.html">進入章節閱讀模式</a>
+    </section>
+
+    <aside id="info-bar" aria-live="polite"></aside>
+    <section id="error-box" role="alert"></section>
+
+    <!-- 保留預覽區 -->
+    <article id="reader-preview"></article>
+  </main>
+
+  <script src="app.v1.1.js"></script>
+  <script src="security.js"></script>
+  <script src="js/app.controller.js"></script>
+  <script src="js/parser.pro.js"></script>
+  <script src="js/render.pro.js"></script>
+</body>
+</html>

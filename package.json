@@ -1,0 +1,45 @@
+{
+  "name": "ksz-reader-app",
+  "version": "1.1.0",
+  "description": "KSZ 筆記閱讀器（桌面版）",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "dist": "electron-builder"
+  },
+  "author": "Chi Hsin Wang",
+  "license": "MIT",
+  "build": {
+    "appId": "com.ksz.reader",
+    "productName": "KSZ Reader",
+    "files": [
+      "main.js",
+      "preload.js",
+      "static/**/*",
+      "icon.ico"
+    ],
+    "directories": {
+      "output": "dist"
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    },
+    "mac": {
+      "target": ["dmg", "zip"],
+      "icon": "icon.icns",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon": "icon.png",
+      "category": "Utility"
+    },
+    "publish": null
+  },
+  "devDependencies": {
+    "electron": "^28.2.5",
+    "electron-builder": "^24.13.3"
+  }
+}
