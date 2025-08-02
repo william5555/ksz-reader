@@ -1,37 +1,76 @@
-name: Build and Release
+name: Build & Release for All Platforms
 
 on:
   push:
     tags:
-      - 'v*'  # 每次打 tag 都會觸發自動打包與發布
-
-permissions:
-  contents: write  # ✅ 讓 GITHUB_TOKEN 有權限建立 Release
+      - "v*.*.*"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest  # Github runner 會自動打包各平台
-
+  build-mac:
+    runs-on: macos-latest
     steps:
-      - name: Checkout repo
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: 18
+      - uses: actions/checkout@v3
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Build App for all platforms
-        run: npm run dist
+      - name: Build macOS
+        run: npm run dist -- --mac
 
-      - name: Upload Release Assets
+      - name: Upload macOS Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: macOS
+          path: |
+            dist/*.dmg
+            dist/*.zip
+
+  build-win:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Windows
+        run: npm run dist -- --win
+
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Windows
+          path: dist/*.exe
+
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build Linux
+        run: npm run dist -- --linux
+
+      - name: Upload Linux Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: Linux
+          path: |
+            dist/*.AppImage
+            dist/*.deb
+
+  release:
+    needs: [build-mac, build-win, build-linux]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v3
+        with:
+          path: ./artifacts
+
+      - name: Publish GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            dist/*.exe
-            dist/*.dmg
-            dist/*.AppImage
-            dist/*.deb
+            artifacts/**/*
