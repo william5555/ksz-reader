@@ -1,13 +1,8 @@
 {
   "name": "ksz-reader-app",
-  "version": "1.1.0",
+  "version": "1.5.9",
   "description": "KSZ 筆記閱讀器（桌面版）",
   "main": "main.js",
-  "author": {
-    "name": "KSZ Team",
-    "email": "noreply@kszreader.app"
-  },
-  "license": "MIT",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
@@ -16,9 +11,6 @@
   "build": {
     "appId": "com.ksz.reader",
     "productName": "KSZ Reader",
-    "directories": {
-      "output": "dist"
-    },
     "files": [
       "main.js",
       "preload.js",
@@ -27,25 +19,45 @@
       "icon.icns",
       "icon.png"
     ],
-    "win": {
-      "target": "nsis",
-      "icon": "icon.ico"
+    "directories": {
+      "output": "dist"
     },
     "mac": {
       "target": ["dmg", "zip"],
       "icon": "icon.icns",
-      "category": "public.app-category.productivity",
-      "hardenedRuntime": false,
-      "gatekeeperAssess": false,
-      "entitlements": null
+      "category": "public.app-category.productivity"
+    },
+    "dmg": {
+      "background": null,
+      "icon": "icon.icns",
+      "iconSize": 100,
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
     },
     "linux": {
       "target": ["AppImage", "deb"],
       "icon": "icon.png",
       "category": "Utility",
-      "maintainer": "noreply@kszreader.app"
-    },
-    "publish": null
+      "maintainer": "KSZ Team <noreply@kszreader.app>"
+    }
+  },
+  "author": {
+    "name": "KSZ Team",
+    "email": "noreply@kszreader.app"
   },
   "devDependencies": {
     "electron": "^28.2.5",
