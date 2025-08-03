@@ -24,38 +24,38 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build Electron app
+      - name: Clean previous builds
+        run: |
+          rm -rf dist || true
+          Remove-Item dist -Recurse -Force -ErrorAction SilentlyContinue || echo "Not Windows"
+
+      - name: Build Electron App
         run: npm run dist
 
-      - name: Upload Artifacts
+      - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ksz-reader-${{ matrix.os }}
           path: |
             dist/*.exe
             dist/*.dmg
-            dist/*.zip
             dist/*.AppImage
             dist/*.deb
+            dist/*.zip
           if-no-files-found: ignore
 
   release:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Download artifacts
+      - name: Download all artifacts
         uses: actions/download-artifact@v4
         with:
           path: artifacts
 
-      - name: Publish GitHub Release
+      - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          files: |
-            artifacts/**/*.exe
-            artifacts/**/*.dmg
-            artifacts/**/*.zip
-            artifacts/**/*.AppImage
-            artifacts/**/*.deb
+          files: artifacts/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
