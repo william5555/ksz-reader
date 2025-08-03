@@ -1,4 +1,4 @@
-name: Release KSZ Reader
+name: Build and Release (macOS)
 
 on:
   push:
@@ -6,30 +6,31 @@ on:
       - 'v*'
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
+  release-mac:
+    runs-on: macos-latest
 
     steps:
-      - name: ⬇️ Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-      - name: ⚙️ Setup Node.js
-        uses: actions/setup-node@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      - name: 🧹 Clean dist folder
-        run: |
-          if [ -d dist ]; then rm -rf dist; fi
-        shell: bash
+      - name: Install dependencies
+        run: npm ci
 
-      - name: 📦 Install dependencies
-        run: npm install
-
-      - name: 🚀 Build and publish
+      - name: Build macOS binaries
         run: npm run dist
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Upload DMG & ZIP to GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/*.dmg
+            dist/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
