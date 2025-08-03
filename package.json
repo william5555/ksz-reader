@@ -2,11 +2,12 @@
   "name": "ksz-reader-app",
   "version": "1.1.0",
   "description": "KSZ 筆記閱讀器（桌面版）",
+  "main": "main.js",
   "author": {
     "name": "KSZ Team",
     "email": "noreply@kszreader.app"
   },
-  "main": "main.js",
+  "license": "MIT",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
@@ -15,15 +16,17 @@
   "build": {
     "appId": "com.ksz.reader",
     "productName": "KSZ Reader",
+    "directories": {
+      "output": "dist"
+    },
     "files": [
       "main.js",
       "preload.js",
       "static/**/*",
-      "icon.ico"
+      "icon.ico",
+      "icon.icns",
+      "icon.png"
     ],
-    "directories": {
-      "output": "dist"
-    },
     "win": {
       "target": "nsis",
       "icon": "icon.ico"
@@ -41,7 +44,8 @@
       "icon": "icon.png",
       "category": "Utility",
       "maintainer": "noreply@kszreader.app"
-    }
+    },
+    "publish": null
   },
   "devDependencies": {
     "electron": "^28.2.5",
