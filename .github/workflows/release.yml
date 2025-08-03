@@ -1,61 +1,35 @@
-name: Build & Release for All Platforms
+name: Release KSZ Reader
 
 on:
   push:
     tags:
-      - 'v*.*.*'
+      - 'v*'
 
 jobs:
   build:
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-    runs-on: ${{ matrix.os }}
+        os: [macos-latest, windows-latest, ubuntu-latest]
 
     steps:
-      - name: Checkout repository
+      - name: ⬇️ Checkout code
         uses: actions/checkout@v4
 
-      - name: Setup Node.js
+      - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install dependencies
+      - name: 🧹 Clean dist folder
+        run: |
+          if [ -d dist ]; then rm -rf dist; fi
+        shell: bash
+
+      - name: 📦 Install dependencies
         run: npm install
 
-      - name: Clean previous builds
-        run: |
-          rm -rf dist || true
-          Remove-Item dist -Recurse -Force -ErrorAction SilentlyContinue || echo "Not Windows"
-
-      - name: Build Electron App
+      - name: 🚀 Build and publish
         run: npm run dist
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: ksz-reader-${{ matrix.os }}
-          path: |
-            dist/*.exe
-            dist/*.dmg
-            dist/*.AppImage
-            dist/*.deb
-            dist/*.zip
-          if-no-files-found: ignore
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download all artifacts
-        uses: actions/download-artifact@v4
-        with:
-          path: artifacts
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: artifacts/**/*
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}

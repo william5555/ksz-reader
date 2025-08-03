@@ -25,7 +25,12 @@
     "mac": {
       "target": ["dmg", "zip"],
       "icon": "icon.icns",
-      "category": "public.app-category.productivity"
+      "category": "public.app-category.productivity",
+      "publish": {
+        "provider": "github",
+        "owner": "william5555",
+        "repo": "ksz-reader-app"
+      }
     },
     "dmg": {
       "background": null,
