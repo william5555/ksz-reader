@@ -1,7 +1,8 @@
 {
   "name": "ksz-reader-app",
-  "version": "1.6.0",
-  "description": "KSZ Reader - 封裝筆記閱讀器 for macOS",
+  "version": "1.6.1",
+  "description": "KSZ Reader - 獨立閱讀器",
+  "author": "KSZ Studio",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -30,4 +31,5 @@
     "electron-builder": "^24.13.3"
   }
 }
+
 

@@ -1,4 +1,4 @@
-name: Build and Release (macOS)
+name: Build & Release macOS App
 
 on:
   push:
@@ -6,11 +6,11 @@ on:
       - 'v*'
 
 jobs:
-  release-mac:
+  build-mac:
     runs-on: macos-latest
 
     steps:
-      - name: Checkout repo
+      - name: Checkout source
         uses: actions/checkout@v3
 
       - name: Setup Node.js
@@ -21,12 +21,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build macOS binaries
+      - name: Build macOS app (dmg + zip)
         run: npm run dist
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
-      - name: Upload DMG & ZIP to GitHub Release
+      - name: Upload to GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           files: |
