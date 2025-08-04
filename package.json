@@ -12,7 +12,16 @@
     "productName": "KSZ Reader",
     "appId": "com.ksz.reader",
     "mac": {
-      "target": ["dmg", "zip"],
+      "target": [
+        {
+          "target": "dmg",
+          "arch": ["universal"]
+        },
+        {
+          "target": "zip",
+          "arch": ["universal"]
+        }
+      ],
       "category": "public.app-category.education"
     },
     "directories": {
@@ -31,5 +40,3 @@
     "electron-builder": "^24.13.3"
   }
 }
-
-
