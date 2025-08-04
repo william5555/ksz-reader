@@ -1,6 +1,6 @@
 {
   "name": "ksz-reader-app",
-  "version": "1.6.1",
+  "version": "1.6.4",
   "description": "KSZ Reader - 獨立閱讀器",
   "author": "KSZ Studio",
   "main": "main.js",

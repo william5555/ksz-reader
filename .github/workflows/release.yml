@@ -1,33 +1,43 @@
-name: Build and Release KSZ Reader
+name: 📦 Build and Release KSZ Reader
 
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*'  # 只針對 push tag (如 v1.6.4) 觸發打包與發佈
 
 jobs:
-  build:
+  release:
+    name: 🛠 Build Universal macOS App
     runs-on: macos-latest
+
     steps:
-      - name: Checkout code
+      # Step 1: 取得原始碼
+      - name: 🧾 Checkout Repository
         uses: actions/checkout@v3
 
-      - name: Setup Node.js
+      # Step 2: 安裝 Node.js（用於打包）
+      - name: ⚙️ Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: 18
 
-      - name: Install dependencies
+      # Step 3: 安裝專案依賴
+      - name: 📥 Install Dependencies
         run: npm install
 
-      - name: Build with electron-builder
+      # Step 4: 使用 electron-builder 打包
+      - name: 🏗 Build App with electron-builder
         run: npm run dist
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}  # ✅ 你自建的 GitHub Personal Access Token
 
-      - name: Upload Release Assets
+      # Step 5: 上傳 artifacts 到 GitHub Release（備援）
+      - name: 📤 Upload Files to GitHub Release
         uses: softprops/action-gh-release@v1
         with:
           files: |
             dist/*.dmg
             dist/*.zip
+            dist/*.blockmap
         env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # ✅ GitHub 預設提供的 Token，無需自建
